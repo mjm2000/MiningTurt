@@ -48,6 +48,7 @@ for i = 1, #sides do
         chest = peripheral.wrap(side)
         chestList = chest.list() 
         for index, value in ipairs(chestList) do
+            print(name)
             if value.count > 0 then
                 local name = value.name
                 print(name)
