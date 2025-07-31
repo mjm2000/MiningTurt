@@ -61,7 +61,6 @@ for label,function in pairs(suck_lookup) do
             turtle.refuel()
         else
             drop_lookup[label]()
-            break
         end
     end
 end
