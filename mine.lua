@@ -44,7 +44,7 @@ function isFuel(name)
 end
 print("Checking for fuel in chests...")
 for i = 1, #sides do
-    local side = sides[i]
+     side = sides[i]
     print("Checking side: " .. side)
     if turtle.detect(side) then
         chest = peripheral.wrap(side)
