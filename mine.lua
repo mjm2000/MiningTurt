@@ -46,6 +46,7 @@ print("Checking for fuel in chests...")
 for i,side in ipairs(sides) do
     print("Checking side: " .. side)
     if turtle.detect(side) then
+        print("Detected chest on side: " .. side)
         chest = peripheral.wrap(side)
         chestList = chest.list() 
         for index, value in ipairs(chestList) do
