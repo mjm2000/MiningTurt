@@ -28,6 +28,17 @@ local fuels = {
   ["minecraft:wood"] = true,
   ["minecraft:sapling"] = true,
 }
+
+suck_lookup = {
+    ["top"] = turtle.suckUp,
+    ["bottom"] = turtle.suckDown,
+    ["left"] = turtle.suckLeft,
+    ["right"] = turtle.suckRight,
+    ["back"] = turtle.suck
+}
+
+
+
 function isFuel(name)
   return fuels[name] == true
 end
@@ -39,10 +50,8 @@ for i = 1, #sides do
         for index, value in ipairs(chestList) do
             if value.count > 0 then
                 local name = value.name
-
                 if name ~= nil and isFuel(value.name) then
-                    turtle.select(value.slot)
-                    turtle.refuel()
+                    suck_lookup[side](value.count)
                 end
             end
         end
