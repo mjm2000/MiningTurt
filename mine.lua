@@ -5,7 +5,7 @@ function combineLists(list1, list2)
   end
   return list1
 end
-inventory = {}
+local inventory = {}
 
 --for slot = 1, 16 do
 --  local count = turtle.getItemCount(slot)
@@ -29,7 +29,7 @@ local fuels = {
   ["minecraft:sapling"] = true,
 }
 
-suck_lookup = {
+local suck_lookup = {
     ["top"] = turtle.suckUp,
     ["bottom"] = turtle.suckDown,
     ["left"] = turtle.suckLeft,
@@ -39,7 +39,7 @@ suck_lookup = {
 
 
 
-function isFuel(name)
+local function isFuel(name)
   return fuels[name] == true
 end
 print("Checking for fuel in chests...")
