@@ -53,9 +53,9 @@ print("Checking for fuel in chests...")
 
 
 
-for label,function in pairs(suck_lookup) do
+for label,f in pairs(suck_lookup) do
     print("Checking side: " .. label)
-    while function() do
+    while f() do
         local item = turtle.getItemDetail()
         if item and isFuel(item.name) then
             turtle.refuel()
