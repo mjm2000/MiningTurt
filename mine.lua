@@ -1,4 +1,4 @@
-sides = {"top", "bottom", "left", "right", "back"}
+local sides = {"top", "bottom", "left", "right", "back"}
 function combineLists(list1, list2)
   for _, v in ipairs(list2) do
     table.insert(list1, v)
