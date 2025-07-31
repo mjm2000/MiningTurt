@@ -50,6 +50,7 @@ for i = 1, #sides do
         for index, value in ipairs(chestList) do
             if value.count > 0 then
                 local name = value.name
+                print(name)
                 if name ~= nil and isFuel(value.name) then
                     suck_lookup[side](value.count)
                 end
