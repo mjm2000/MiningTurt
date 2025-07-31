@@ -42,6 +42,7 @@ suck_lookup = {
 function isFuel(name)
   return fuels[name] == true
 end
+print("Checking for fuel in chests...")
 for i = 1, #sides do
     local side = sides[i]
     if turtle.detect(side) then
