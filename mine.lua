@@ -50,7 +50,7 @@ for i,side in ipairs(sides) do
     chest = peripheral.wrap(side)
     if chest == nil then
         print("No chest found on side: " .. side)
-        goto continue
+        continue
     end
     chestList = chest.list() 
     
