@@ -45,20 +45,25 @@ end
 print("Checking for fuel in chests...")
 for i,side in ipairs(sides) do
     print("Checking side: " .. side)
-    if turtle.detect(side) then
-        print("Detected chest on side: " .. side)
-        chest = peripheral.wrap(side)
-        chestList = chest.list() 
-        for index, value in ipairs(chestList) do
+    --if turtle.detect(side) then
+    print("Detected chest on side: " .. side)
+    chest = peripheral.wrap(side)
+    if chest == nil then
+        print("No chest found on side: " .. side)
+        goto continue
+    end
+    chestList = chest.list() 
+    
+    for index, value in ipairs(chestList) do
+        print(name)
+        if value.count > 0 then
+            local name = value.name
             print(name)
-            if value.count > 0 then
-                local name = value.name
-                print(name)
-                if name ~= nil and isFuel(value.name) then
-                    suck_lookup[side](value.count)
-                end
+            if name ~= nil and isFuel(value.name) then
+                suck_lookup[side](value.count)
             end
         end
+        --end
     end
 end
 
