@@ -370,10 +370,11 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
     end
 end
 -- KEEP
---local face_direction = select_direction() -- Select the direction to mine 
---local amount = ask_for_integer("how many blocks should it mine") -- Get the number of blocks to mine                        
---                                                                                                                           
---local mine_separation = ask_for_integer("how many blocks should it separate the mine") -- Get the separation between mines
---local mine_path_len = ask_for_integer("how long should the mine be") -- Get the length of the mine
+local face_direction = select_direction() -- Select the direction to mine 
+local amount = ask_for_integer("how many blocks should it mine") -- Get the number of blocks to mine                        
+                                                                                                                           
+local mine_separation = ask_for_integer("how many blocks should it separate the mine") -- Get the separation between mines
+local mine_path_len = ask_for_integer("how long should the mine be") -- Get the length of the mine
+mineF(face_direction, amount, mine_separation, mine_path_len) -- Start mining in the selected direction with the specified parameters
 
-mineF("north",100,2,10)
+--mineF("north",100,2,10)
