@@ -355,6 +355,7 @@ local function mineF()
         end
     end
 end
+mineF()
     
 
 
