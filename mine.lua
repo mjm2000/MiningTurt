@@ -18,6 +18,7 @@ local inventory = {}
 --    })
 --  end
 --end
+
 local fuels = {
   ["minecraft:coal"] = true,
   ["minecraft:charcoal"] = true,
@@ -28,6 +29,13 @@ local fuels = {
   ["minecraft:wood"] = true,
   ["minecraft:sapling"] = true,
 }
+
+
+
+
+
+
+
 
 local suck_lookup = {
     ["top"] = turtle.suckUp,
@@ -49,24 +57,210 @@ local drop_lookup = {
 local function isFuel(name)
   return fuels[name] == true
 end
+
 print("Checking for fuel in chests...")
 
+global face_direction = "west"
+
+global function move_foward()=
+    while turtle.inspect() do
+        tutle.dig()
+    end
+    if turtle.forward() then
+        if face_direction == "west" then
+            global gps_x = gps_x - 1
+        elseif face_direction == "east" then
+            global gps_x = gps_x + 1
+        elseif face_direction == "north" then
+            global gps_z = gps_z - 1
+        elseif face_direction == "south" then
+            global gps_z = gps_z + 1
+        end
+    else    
+        return false
+    end
+end
+local function backward()
+    if turtle.back() then
+        if face_direction == "west" then
+            global gps_x = gps_x + 1
+        elseif face_direction == "east" then
+            global gps_x = gps_x - 1
+        elseif face_direction == "north" then
+            global gps_z = gps_z + 1
+        elseif face_direction == "south" then
+            global gps_z = gps_z - 1
+        end
+        return true
+    else
+        return false
+    end
+end
+
+global gps_x = 0
+global gps_z = 0
+globay gps_y = 0
+global function check_fuel() 
+    if turtle.getFuelLevel() <= (abs(gps_z) + abs(gps_x) + 5) then
+                return_home()
+    end
+end
+
+local function turnLeft()
+    if turtle.turnLeft() then
+        if face_direction == "west" then
+            face_direction = "south"
+        elseif face_direction == "south" then
+            face_direction = "east"
+        elseif face_direction == "east" then
+            face_direction = "north"
+        elseif face_direction == "north" then
+            face_direction = "west"
+        end
+        return true
+    else
+        return false
+    end
+end
+local function turnRight()
+    if turtle.turnRight() then
+        if face_direction == "west" then
+            face_direction = "north"
+        elseif face_direction == "north" then
+            face_direction = "east"
+        elseif face_direction == "east" then
+            face_direction = "south"
+        elseif face_direction == "south" then
+            face_direction = "west"
+        end
+        return true
+    else
+        return false
+    end
+end
+
+local function faceNorth()
+    while face_direction ~= "north" do
+        if not turnLeft() then
+            return false
+        end
+    end
+    return true
+end
+local function faceSouth()
+    while face_direction ~= "south" do
+        if not turnLeft() then
+            return false
+        end
+    end
+    return true
+end
+local function faceWest()
+    while face_direction ~= "west" do
+        if not turnLeft() then
+            return false
+        end
+    end
+    return true
+end
+local function faceEast()
+    while face_direction ~= "east" do
+        if not turnLeft() then
+            return false
+        end
+    end
+    return true
+end
 
 
-for label,f in pairs(suck_lookup) do
-    print("Checking side: " .. label)
-    while f() do
-        local item = turtle.getItemDetail()
-        if item and isFuel(item.name) then
-            turtle.refuel()
-        else
-            drop_lookup[label]()
+
+local function return_south()
+    faceNorth()
+    while gps_z > 0 do
+        if not move_foward() then
+            return 
+        end
+    end
+end
+local function return_north()
+    faceSouth()
+    while gps_z < 0 do
+        if not move_foward() then
+            return 
+        end
+    end
+end
+local function return_east()
+    faceEast()
+    while gps_x < 0 do
+        if not move_foward() then
+            return 
         end
     end
 end
 
 
+local function return_home()
+    if gps_x == 0 and gps_z == 0 then
+        return 
+    end
+    if gps_x < 0 and gps_z > 0 then
+        return_south()
+    end 
+    if gps_x < 0 and gps_z < 0 then
+        return_north()
+    end 
+    if gps_z < 0 and gps_z == 0 then
+        return_east()
+    end
+end
+        
+        
 
+let set_home = function()
+    gps_x = 0
+    gps_z = 0
+    face_direction = "west"
+end
+
+global function digNorth(len)
+    faceNorth()
+    while turtle.detect() do
+        turtle.dig()
+
+    end
+    return move_foward()
+end
+
+
+local function mineF()
+    global mine_path_len =  10
+    global mine_separation = 2
+    
+    set_home() -- Set the home position    
+    turtle.suckUp() -- Suck items from the right side
+    while turtle.suckleft() do
+    end
+    turtle.refuel() -- Refuel the turtle
+    move_foward() -- Move forward to start mining
+    while true do
+        for slot =1, 16  do 
+            local item = turtle.getItemDetail(slot)
+            if item ~= nil and isFuel(item.name) then
+                turtle.select(slot)
+                turtle.refuel()
+            end
+        end 
+        check_fuel() -- Check if the turtle has enough fuel
+        
+        for i = 1, mine_path_len do
+            if not move_foward() then
+                return false
+            end
+        end
+    end
+    
+end
 
 
 --for i,side in ipairs(sides) do
