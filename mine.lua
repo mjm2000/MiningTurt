@@ -113,7 +113,7 @@ local face_direction = "west"
 
 local function move_foward()
     while turtle.inspect() do
-        tutle.dig()
+        turtle.dig()
     end
     if turtle.forward() then
         if face_direction == "west" then
@@ -335,15 +335,7 @@ local function mine_foward()
 
 end
 
-local function mineF()
-    local mine_path_len =  10
-    local mine_separation = 2
-
-    face_direction = select_direction() -- Select the direction to mine 
-    local amount = ask_for_integer("how many blocks should it mine") -- Get the number of blocks to mine
-
-    local mine_separation = ask_for_integer("how many blocks should it separate the mine") -- Get the separation between mines
-    local mine_path_len = ask_for_integer("how long should the mine be") -- Get the length of the mine
+local function mineF(face_direction,amount, mine_separation, mine_path_len)
     set_home() -- Set the home position    
     turtle.suckUp() -- Suck items from the right side
     dumpItems() -- Dump items to the chest below   
@@ -372,7 +364,11 @@ local function mineF()
     end
 end
 mineF()
-    
+-- KEEP
+--local face_direction = select_direction() -- Select the direction to mine 
+--local amount = ask_for_integer("how many blocks should it mine") -- Get the number of blocks to mine                        
+--                                                                                                                           
+--local mine_separation = ask_for_integer("how many blocks should it separate the mine") -- Get the separation between mines
+--local mine_path_len = ask_for_integer("how long should the mine be") -- Get the length of the mine
 
-
-
+mineF("north",100,2,10)
