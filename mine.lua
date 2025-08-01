@@ -155,7 +155,7 @@ end
 
 
 local function check_fuel() 
-    if turtle.getFuelLevel() <= (abs(gps_z) + abs(gps_x) + 5) then
+    if turtle.getFuelLevel() <= (math.abs(gps_z) + math.abs(gps_x) + 5) then
             return_home()
     end
 end
