@@ -62,7 +62,7 @@ print("Checking for fuel in chests...")
 
 local face_direction = "west"
 
-local function move_foward()=
+local function move_foward()
     while turtle.inspect() do
         tutle.dig()
     end
