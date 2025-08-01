@@ -60,21 +60,21 @@ end
 
 print("Checking for fuel in chests...")
 
-global face_direction = "west"
+local face_direction = "west"
 
-global function move_foward()=
+local function move_foward()=
     while turtle.inspect() do
         tutle.dig()
     end
     if turtle.forward() then
         if face_direction == "west" then
-            global gps_x = gps_x - 1
+            local gps_x = gps_x - 1
         elseif face_direction == "east" then
-            global gps_x = gps_x + 1
+            local gps_x = gps_x + 1
         elseif face_direction == "north" then
-            global gps_z = gps_z - 1
+            local gps_z = gps_z - 1
         elseif face_direction == "south" then
-            global gps_z = gps_z + 1
+            local gps_z = gps_z + 1
         end
     else    
         return false
@@ -83,13 +83,13 @@ end
 local function backward()
     if turtle.back() then
         if face_direction == "west" then
-            global gps_x = gps_x + 1
+            local gps_x = gps_x + 1
         elseif face_direction == "east" then
-            global gps_x = gps_x - 1
+            local gps_x = gps_x - 1
         elseif face_direction == "north" then
-            global gps_z = gps_z + 1
+            local gps_z = gps_z + 1
         elseif face_direction == "south" then
-            global gps_z = gps_z - 1
+            local gps_z = gps_z - 1
         end
         return true
     else
@@ -97,10 +97,10 @@ local function backward()
     end
 end
 
-global gps_x = 0
-global gps_z = 0
+local gps_x = 0
+local gps_z = 0
 globay gps_y = 0
-global function check_fuel() 
+local function check_fuel() 
     if turtle.getFuelLevel() <= (abs(gps_z) + abs(gps_x) + 5) then
                 return_home()
     end
@@ -223,7 +223,7 @@ let set_home = function()
     face_direction = "west"
 end
 
-global function digNorth(len)
+local function digNorth(len)
     faceNorth()
     while turtle.detect() do
         turtle.dig()
@@ -234,8 +234,8 @@ end
 
 
 local function mineF()
-    global mine_path_len =  10
-    global mine_separation = 2
+    local mine_path_len =  10
+    local mine_separation = 2
     
     set_home() -- Set the home position    
     turtle.suckUp() -- Suck items from the right side
