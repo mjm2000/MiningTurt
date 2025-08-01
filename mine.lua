@@ -366,7 +366,7 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
         for i = 1, mine_path_len do
             move_foward() 
         end                                                                
-        turnLeft() -- Turn right to face the next direction
+        turnRight() -- Turn right to face the next direction
     end
 end
 -- KEEP
