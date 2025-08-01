@@ -359,7 +359,6 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
         turnLeft() -- Turn right to face the next direction
     end
 end
-mineF()
 -- KEEP
 --local face_direction = select_direction() -- Select the direction to mine 
 --local amount = ask_for_integer("how many blocks should it mine") -- Get the number of blocks to mine                        
