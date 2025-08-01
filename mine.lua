@@ -263,24 +263,5 @@ local function mineF()
 end
 
 
---for i,side in ipairs(sides) do
---    print("Checking side: " .. side)
---    --if turtle.detect(side) then
---    chest = peripheral.wrap(side)
---    if chest ~= nil then
---        chestList = chest.list() 
---        for index, value in ipairs(chestList) do
---            print(name)
---            if value.count > 0 then
---                local name = value.name
---                print(name)
---                if name ~= nil and isFuel(value.name) then
---                    print("Found fuel: " .. name .. " with count: " .. value.count)
---                    chest.pushItems(side, 1, value.count)  
---                end
---            end
---        end
---    end
---end
 
 
