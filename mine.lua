@@ -340,27 +340,23 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
     turtle.suckUp() -- Suck items from the right side
     dumpItems() -- Dump items to the chest below   
     move_foward() -- Move forward to start mining
-
-    if face_direction == nil then
-        print("No valid direction selected. Exiting.")
-        return
-    end
     for i = 1, amount do
         for i = 1, mine_separation do
             mine_foward() -- Mine forward
         end
+        turnLeft() -- Turn left 
         for i = 1, mine_path_len do
-            turnLeft() -- Turn left 
             mine_foward() -- Mine forward
             return_center() -- Return to the center
-            turnRight() -- Turn right to face the next direction
         end
+
+        turnRight() -- Turn right to face the next direction
         for i = 1, mine_path_len do                 
-            turnRight() -- Turn left 
             mine_foward() -- Mine forward
             return_center() -- Return to the center
-            turnLeft() -- Turn right to face the next direction
         end
+
+        turnLeft() -- Turn right to face the next direction
     end
 end
 mineF()
