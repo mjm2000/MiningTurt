@@ -334,7 +334,10 @@ local function mine_foward()
     check_fuel() -- Check if the turtle has enough fuel
 
 end
-
+local function turn_around()
+    turnLeft()
+    turnLeft()
+end
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
     set_home() -- Set the home position    
     turtle.suckUp() -- Suck items from the right side
@@ -343,21 +346,26 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
     for i = 1, amount do
         for i = 1, mine_separation do
             mine_foward() -- Mine forward
+            print("separation: ".. i)
         end
         turnLeft() -- Turn left 
-        turnLeft()
         for i = 1, mine_path_len do
             mine_foward() -- Mine forward
-            return_center() -- Return to the center
+            print("branch left: ".. i)
         end
-        turnRight() -- Turn right to face the next direction
-        turnRight()
+        turn_around() -- Turn around to face the opposite direction
+        for i = 1, mine_path_len do
+            move_foward() 
+        end
 
         for i = 1, mine_path_len do                 
             mine_foward() -- Mine forward
-            return_center() -- Return to the center
+            print("branch right: ".. i)
         end
-
+        turn_around() -- Turn around to face the opposite direction
+        for i = 1, mine_path_len do
+            move_foward() 
+        end                                                                
         turnLeft() -- Turn right to face the next direction
     end
 end
