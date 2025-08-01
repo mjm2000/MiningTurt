@@ -156,7 +156,8 @@ end
 
 local function check_fuel() 
     if turtle.getFuelLevel() <= (math.abs(gps_z) + math.abs(gps_x) + 5) then
-            return_home()
+            -- return_home()
+            print("Not enough fuel to continue mining. Returning home.")
     end
 end
 
@@ -357,7 +358,6 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
         for i = 1, mine_path_len do
             move_foward() 
         end
-
         for i = 1, mine_path_len do                 
             mine_foward() -- Mine forward
             print("branch right: ".. i)
