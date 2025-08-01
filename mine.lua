@@ -99,7 +99,7 @@ end
 
 local gps_x = 0
 local gps_z = 0
-globay gps_y = 0
+local gps_y = 0
 local function check_fuel() 
     if turtle.getFuelLevel() <= (abs(gps_z) + abs(gps_x) + 5) then
                 return_home()
@@ -217,7 +217,7 @@ end
         
         
 
-let set_home = function()
+local function set_home()
     gps_x = 0
     gps_z = 0
     face_direction = "west"
