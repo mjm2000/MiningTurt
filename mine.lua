@@ -60,6 +60,44 @@ end
 
 print("Checking for fuel in chests...")
 
+
+local face_direction = "west"  -- Default facing direction
+function select_direction()
+    local directions = { "north", "east", "south", "west" }
+
+    print("Choose a direction:")
+    for i, dir in ipairs(directions) do
+        print(i .. ". " .. dir)
+    end
+
+    write("Enter number (1-4): ")
+    local choice = read()
+
+    local num = tonumber(choice)
+    if num and directions[num] then
+        return directions[num]
+    else
+        print("Invalid selection.")
+        return nil
+    end
+end
+
+
+local function ask_for_integer(prompt) 
+    while true do
+        write(prompt or "Enter how many block you want to mine: ")
+    local input = read()
+    local num = tonumber(input)
+    if num and math.floor(num) == num then
+      return num
+    else
+      print("Invalid input. Please enter a valid integer.")
+    end
+  end 
+end
+
+
+
 local face_direction = "west"
 
 local function move_foward()
@@ -102,7 +140,7 @@ local gps_z = 0
 local gps_y = 0
 local function check_fuel() 
     if turtle.getFuelLevel() <= (abs(gps_z) + abs(gps_x) + 5) then
-                return_home()
+            return_home()
     end
 end
 
@@ -200,16 +238,20 @@ local function return_east()
 end
 
 
-local function return_home()
-    if gps_x == 0 and gps_z == 0 then
-        return 
-    end
+local function return_center()
     if gps_x < 0 and gps_z > 0 then
         return_south()
     end 
     if gps_x < 0 and gps_z < 0 then
         return_north()
     end 
+end
+
+local function return_home()
+    if gps_x == 0 and gps_z == 0 then
+        return 
+    end
+    return_center()  
     if gps_z < 0 and gps_z == 0 then
         return_east()
     end
@@ -231,37 +273,89 @@ local function digNorth(len)
     end
     return move_foward()
 end
-
-
-local function mineF()
-    local mine_path_len =  10
-    local mine_separation = 2
-    
-    set_home() -- Set the home position    
-    turtle.suckUp() -- Suck items from the right side
-    while turtle.suckleft() do
-    end
-    turtle.refuel() -- Refuel the turtle
-    move_foward() -- Move forward to start mining
-    while true do
-        for slot =1, 16  do 
+local function refuel()
+    for slot =1, 16  do 
             local item = turtle.getItemDetail(slot)
             if item ~= nil and isFuel(item.name) then
                 turtle.select(slot)
                 turtle.refuel()
             end
-        end 
-        check_fuel() -- Check if the turtle has enough fuel
-        
-        for i = 1, mine_path_len do
-            if not move_foward() then
-                return false
-            end
-        end
     end
-    
 end
 
+local mine
+
+local keepItems = {
+  ["minecraft:torch"] = true,
+  ["silentgear:stonetorch"] = true,
+  ["minecraft:coal"] = true,
+  ["minecraft:charcoal"] = true
+}
+
+local function dumpItems()
+  for i = 1, 16 do
+        turtle.select(i)
+        local item = turtle.getItemDetail()
+        if item ~= nil and not keepItems[item.name] then
+            turtle.dropDown()
+        end
+    end
+end
+
+
+local function mine_foward()
+    if turtle.detect() then 
+        turtle.digUp()
+    end
+    if turtle.detectDown() then
+        turtle.digDown()
+    end
+    if turtle.detect() then
+        turtle.dig()
+    end
+    move_foward()
+    refuel() -- Refuel the turtle        
+    check_fuel() -- Check if the turtle has enough fuel
+
+end
+
+local function mineF()
+    local mine_path_len =  10
+    local mine_separation = 2
+
+    face_direction = select_direction() -- Select the direction to mine 
+    local amount = ask_for_integer("how many blocks should it mine") -- Get the number of blocks to mine
+
+    local mine_separation = ask_for_integer("how many blocks should it separate the mine") -- Get the separation between mines
+    local mine_path_len = ask_for_integer("how long should the mine be") -- Get the length of the mine
+    set_home() -- Set the home position    
+    turtle.suckUp() -- Suck items from the right side
+    dumpItems() -- Dump items to the chest below   
+    move_foward() -- Move forward to start mining
+
+    if face_direction == nil then
+        print("No valid direction selected. Exiting.")
+        return
+    end
+    for i = 1, amount do
+        for i = 1, mine_separation do
+            mine_foward() -- Mine forward
+        end
+        for i = 1, mine_path_len do
+            turnLeft() -- Turn left 
+            mine_foward() -- Mine forward
+            return_center() -- Return to the center
+            turnRight() -- Turn right to face the next direction
+        end
+        for i = 1, mine_path_len do                 
+            turnRight() -- Turn left 
+            mine_foward() -- Mine forward
+            return_center() -- Return to the center
+            turnLeft() -- Turn right to face the next direction
+        end
+    end
+end
+    
 
 
 
