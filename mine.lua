@@ -1,3 +1,14 @@
+
+
+
+
+local gps_x = 0
+local gps_z = 0
+local gps_y = 0
+
+
+
+
 local sides = {"top", "bottom", "left", "right", "back"}
 function combineLists(list1, list2)
   for _, v in ipairs(list2) do
@@ -118,6 +129,11 @@ local function move_foward()
         return false
     end
 end
+
+
+
+
+
 local function backward()
     if turtle.back() then
         if face_direction == "west" then
@@ -135,9 +151,9 @@ local function backward()
     end
 end
 
-local gps_x = 0
-local gps_z = 0
-local gps_y = 0
+
+
+
 local function check_fuel() 
     if turtle.getFuelLevel() <= (abs(gps_z) + abs(gps_x) + 5) then
             return_home()
