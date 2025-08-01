@@ -345,12 +345,14 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
             mine_foward() -- Mine forward
         end
         turnLeft() -- Turn left 
+        turnLeft()
         for i = 1, mine_path_len do
             mine_foward() -- Mine forward
             return_center() -- Return to the center
         end
-
         turnRight() -- Turn right to face the next direction
+        turnRight()
+
         for i = 1, mine_path_len do                 
             mine_foward() -- Mine forward
             return_center() -- Return to the center
