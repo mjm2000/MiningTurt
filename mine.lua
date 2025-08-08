@@ -447,9 +447,6 @@ end
 
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
     set_home() -- Set the home position    
-    turtle.suckUp() -- Suck items from the right side
-    dumpItems() -- Dump items to the chest below   
-    move_foward() -- Move forward to start mining
     for i = 1, amount do
         if not enough_fuel((mine_path_len+3)*2 + mine_separation) then
             print("Not enough fuel to continue mining.")
