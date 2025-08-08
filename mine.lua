@@ -448,6 +448,7 @@ end
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
     set_home() -- Set the home position    
     for i = 1, amount do
+        refuel() -- Refuel the turtle
         if not enough_fuel((mine_path_len+3)*2 + mine_separation) then
             print("Not enough fuel to continue mining.")
             return
