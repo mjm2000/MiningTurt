@@ -205,7 +205,7 @@ end
 
 
 local function enough_fuel(value)
-    return turtle.getFuelLevel() <= (math.abs(gps_z) + math.abs(gps_x) + value)
+    return turtle.getFuelLevel() >= (math.abs(gps_z) + math.abs(gps_x) + value)
 end
 
 
