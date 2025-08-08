@@ -111,8 +111,43 @@ end
 
 local face_direction = "west"
 
+
+local function place_torch()
+    for slot = 1, 16 do
+        local item = turtle.getItemDetail(slot)
+        if item and (item.name == "minecraft:torch" or item.name == "silentgear:stonetorch") then
+            if turtle.placeDown() then
+                return true
+            else
+                print("Failed to place torch.")
+                return false
+            end
+        else
+            print("No torch in hand.")
+            return false
+        end
+    end
+end
+local function plug_liquid()
+    local success, data = turtle.inspect()
+    if data.name == "minecraft:water" or data.name == "minecraft:lava" then
+        -- find any stone in the inventory
+        for slot = 1, 16 do
+            local item = turtle.getItemDetail(slot)
+            if item and item.name == "minecraft:cobblestone" then
+                turtle.select(slot)
+                turtle.place()
+                break
+            end
+        end
+        
+    end
+end
+
+
+
 local function move_foward()
-    while turtle.inspect() do
+    while turtle.detect() do
         turtle.dig()
     end
     if turtle.forward() then
@@ -125,6 +160,19 @@ local function move_foward()
         elseif face_direction == "south" then
             local gps_z = gps_z + 1
         end
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     else    
         return false
     end
@@ -154,12 +202,13 @@ end
 
 
 
-local function check_fuel() 
-    if turtle.getFuelLevel() <= (math.abs(gps_z) + math.abs(gps_x) + 5) then
-            -- return_home()
-            print("Not enough fuel to continue mining. Returning home.")
-    end
+
+
+local function enough_fuel(value)
+    return turtle.getFuelLevel() <= (math.abs(gps_z) + math.abs(gps_x) + value)
 end
+
+
 
 local function turnLeft()
     if turtle.turnLeft() then
@@ -332,42 +381,88 @@ local function mine_foward()
     end
     move_foward()
     refuel() -- Refuel the turtle        
-    check_fuel() -- Check if the turtle has enough fuel
+     -- Check if the turtle has enough fuel
 
 end
 local function turn_around()
     turnLeft()
     turnLeft()
 end
+
+local function mine_x_blocks(x)
+    for i = 1, x do
+        mine_foward()
+    end
+end
+local function mine_x_blocks(x)
+    for i = 1, x do
+        move_foward()
+    end
+end
+local function branch_mine(mine_path_len)
+        mine_x_blocks(mine_path_len)
+        turn_around() -- Turn around to face the opposite direction
+        move_x_blocks(mine_path_len) -- Move back to the main path 
+end
+
+
+
+local function distance_in_center_from_home()
+    if face_direction == "north" or face_direction == "south" then
+        return math.abs(gps_z) 
+    elseif face_direction == "west" or face_direction == "east" then
+        return math.abs(gps_x) 
+    end
+    
+end
+local function return_home_from_center()
+    turn_around() -- Turn around to face the opposite direction
+    local distance_from_home = distance_in_center_from_home() -- Calculate the distance from home 
+    if distance_from_home > 0 then
+        move_x_blocks(distance_from_home) -- Move back to the center
+    end
+end
+-- dump items in chest above
+local keepItems = {
+  ["minecraft:torch"] = true,
+  ["silentgear:stonetorch"] = true,
+  ["minecraft:coal"] = true,
+  ["minecraft:charcoal"] = true
+}
+local function dumpItemsUp()
+  local is_block,item = turtle.inspectUp() 
+  if is_block and item.name == "minecraft:chest" then
+    for i = 1, 16 do
+        turtle.select(i)
+        local item = turtle.getItemDetail()
+        if item ~= nil and not keepItems[item.name] then
+            turtle.dropUp()
+        end
+    end
+   else
+    print("No chest found above.")
+  end
+
+end
+
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
     set_home() -- Set the home position    
     turtle.suckUp() -- Suck items from the right side
     dumpItems() -- Dump items to the chest below   
     move_foward() -- Move forward to start mining
     for i = 1, amount do
-        for i = 1, mine_separation do
-            mine_foward() -- Mine forward
-            print("separation: ".. i)
+        if not enough_fuel((mine_path_len+3)*2 + mine_separation) then
+            print("Not enough fuel to continue mining.")
+            return
         end
+        mine_x_blocks(mine_separation) -- Move forward the separation distance
         turnLeft() -- Turn left 
-        for i = 1, mine_path_len do
-            mine_foward() -- Mine forward
-            print("branch left: ".. i)
-        end
-        turn_around() -- Turn around to face the opposite direction
-        for i = 1, mine_path_len do
-            move_foward() 
-        end
-        for i = 1, mine_path_len do                 
-            mine_foward() -- Mine forward
-            print("branch right: ".. i)
-        end
-        turn_around() -- Turn around to face the opposite direction
-        for i = 1, mine_path_len do
-            move_foward() 
-        end                                                                
+        branch_mine(mine_path_len) -- Mine the specified length in the current direction 
+        branch_mine(mine_path_len) -- Mine the specified length in the current direction
         turnRight() -- Turn right to face the next direction
     end
+    return_home_from_center() -- Return to the home position
+    dumpItemsUp()
 end
 -- KEEP
 local face_direction = select_direction() -- Select the direction to mine 
