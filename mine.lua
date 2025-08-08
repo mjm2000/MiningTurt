@@ -370,7 +370,7 @@ end
 
 
 local function mine_foward()
-    if turtle.detect() then 
+    if turtle.detectUp() then 
         turtle.digUp()
     end
     if turtle.detectDown() then
@@ -394,7 +394,7 @@ local function mine_x_blocks(x)
         mine_foward()
     end
 end
-local function mine_x_blocks(x)
+local function move_x_blocks(x)
     for i = 1, x do
         move_foward()
     end
