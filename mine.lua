@@ -417,6 +417,9 @@ end
 local function mine_x_blocks(x)
     for i = 1, x do
         mine_foward()
+        if i % 4 == 0 then
+            place_torch() -- Place a torch every 8 blocks
+        end
     end
 end
 local function move_x_blocks(x)
@@ -505,10 +508,15 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
 end
 -- KEEP
 local face_direction = select_direction() -- Select the direction to mine 
-local amount = ask_for_integer("how many blocks should it mine") -- Get the number of blocks to mine                        
-                                                                                                                           
-local mine_separation = ask_for_integer("how many blocks should it separate the mine") -- Get the separation between mines
-local mine_path_len = ask_for_integer("how long should the mine be") -- Get the length of the mine
+if #arg < 3 then
+    local amount = ask_for_integer("how many branches should we mine?: ") -- Get the number of blocks to mine                        
+    local mine_separation = ask_for_integer("how many blocks should it separate the branches") -- Get the separation between mines
+    local mine_path_len = ask_for_integer("how long should each branch be") -- Get the length of the mine
+else
+    local amount = tonumber(arg[1])
+    local mine_separation = tonumber(arg[2])
+    local mine_path_len = tonumber(arg[3])
+end
 mineF(face_direction, amount, mine_separation, mine_path_len) -- Start mining in the selected direction with the specified parameters
 
 --mineF("north",100,2,10)
