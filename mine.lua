@@ -151,13 +151,13 @@ local function move_foward()
     end
     if turtle.forward() then
         if face_direction == "west" then
-            local gps_x = gps_x - 1
+            gps_x = gps_x - 1
         elseif face_direction == "east" then
-            local gps_x = gps_x + 1
+            gps_x = gps_x + 1
         elseif face_direction == "north" then
-            local gps_z = gps_z - 1
+            gps_z = gps_z - 1
         elseif face_direction == "south" then
-            local gps_z = gps_z + 1
+            gps_z = gps_z + 1
         end
         
         
