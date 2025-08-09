@@ -114,9 +114,9 @@ local face_direction = "west"
 
 local function place_torch()
     for slot = 1, 16 do
+        turtle.select(slot)
         local item = turtle.getItemDetail(slot)
         if item and (item.name == "minecraft:torch" or item.name == "silentgear:stone_torch") then
-            turtle.select(slot)
             if turtle.placeDown() then
                 print("Torch placed successfully.")
                 return true
@@ -553,7 +553,6 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
             dumpItemsUp() -- Dump items in the chest above
             turn_around() -- Turn around to face the opposite direction
             move_x_blocks(blocks_to_return) -- Move back to the center
-            break
         end
         mine_x_blocks(mine_separation) -- Move forward the separation distance
         turnLeft() -- Turn left 
