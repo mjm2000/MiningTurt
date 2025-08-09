@@ -122,9 +122,6 @@ local function place_torch()
                 print("Failed to place torch.")
                 return false
             end
-        else
-            print("No torch in hand.")
-            return false
         end
     end
 end
@@ -486,6 +483,7 @@ end
 
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
     set_home() -- Set the home position    
+    move_foward() -- Move forward to start mining
     for i = 1, amount do
         refuel() -- Refuel the turtle
         if not enough_fuel((mine_path_len+3)*2 + mine_separation) then
