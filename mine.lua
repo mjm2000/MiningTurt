@@ -513,6 +513,7 @@ local function dumpItemsUp()
 end
 
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
+    place_torch()
     if not enough_fuel(1) then
         print("Not enough fuel to start mining.")
         return
