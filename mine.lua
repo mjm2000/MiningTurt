@@ -391,18 +391,37 @@ local function remove_liquid(inspected_function,place_function)
     end
 end
 
+local torchs = {
+    ["minecraft:torch"] = true,
+    ["silentgear:stone_torch"] = true
+}
+
+local function is_torch(f)
+    local is_block, item = f()
+    if is_block and torchs[item.name] then
+        return true
+    end
+    return false
+end
+
 local function mine_foward()
     if turtle.detectUp() then 
         remove_liquid(turtle.inspectUp, turtle.placeUp)
-        turtle.digUp()
+        if not is_torch(turtle.inspectUp) then
+            turtle.digUp()
+        end
     end
     if turtle.detectDown() then
         remove_liquid(turtle.inspectDown, turtle.placeDown)
-        turtle.digDown()
+        if not is_torch(turtle.inspectDown) then
+            turtle.digDown()
+        end
     end
     if turtle.detect() then
         remove_liquid(turtle.inspect, turtle.place)
-        turtle.dig()
+        if not is_torch(turtle.inspect) then
+            turtle.dig()
+        end
     end
     move_foward()
     refuel() -- Refuel the turtle        
@@ -416,11 +435,11 @@ end
 
 local function mine_x_blocks(x)
     for i = 1, x do
-        mine_foward()
         if i % 4 == 0 then
             place_torch() -- Place a torch every 8 blocks
         end
-    end
+        mine_foward()
+        end
 end
 local function move_x_blocks(x)
     for i = 1, x do
