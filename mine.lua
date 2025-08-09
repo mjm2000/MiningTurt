@@ -467,10 +467,37 @@ local function isInventoryFull()
   return true
 end
 
+local is_chest = {
+    ["minecraft:chest"] = true,
+    ["minecraft:trapped_chest"] = true,
+    ["minecraft:ender_chest"] = true,
+    ["ironchest:iron_chest"] = true,
+    ["ironchest:gold_chest"] = true,
+    ["ironchest:diamond_chest"] = true,
+    ["ironchest:obsidian_chest"] = true,
+    ["storagedrawers:oak_full_drawers"] = true,
+    ["storagedrawers:spruce_full_drawers"] = true,
+    ["storagedrawers:birch_full_drawers"] = true,
+    ["storagedrawers:jungle_full_drawers"] = true,
+    ["storagedrawers:acacia_full_drawers"] = true,
+    ["storagedrawers:dark_oak_full_drawers"] = true,
+    ["storagedrawers:crimson_full_drawers"] = true,
+    ["storagedrawers:warped_full_drawers"] = true
+    ["sophisticatedstorage:chest"] = true,
+    ["sophisticatedstorage:wood_chest"] = true,
+    ["sophisticatedstorage:stone_chest"] = true,
+    ["sophisticatedstorage:iron_chest"] = true,
+    ["sophisticatedstorage:gold_chest"] = true,
+    ["sophisticatedstorage:diamond_chest"] = true,
+    ["sophisticatedstorage:netherite_chest"] = true
+
+}
+
+
 
 local function dumpItemsUp()
   local is_block,item = turtle.inspectUp() 
-  if is_block and item.name == "minecraft:chest" then
+  if is_block and is_chest[item.name]  then
     for i = 1, 16 do
         turtle.select(i)
         local item = turtle.getItemDetail()
