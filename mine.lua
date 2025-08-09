@@ -508,7 +508,7 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
 end
 -- KEEP
 local face_direction = select_direction() -- Select the direction to mine 
-if #arg != 3 then
+if #arg ~= 3 then
     local amount = ask_for_integer("how many branches should we mine?: ") -- Get the number of blocks to mine                        
     local mine_separation = ask_for_integer("how many blocks should it separate the branches") -- Get the separation between mines
     local mine_path_len = ask_for_integer("how long should each branch be") -- Get the length of the mine
