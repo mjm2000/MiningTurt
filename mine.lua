@@ -445,6 +445,7 @@ end
 local function return_home_from_center()
     turn_around() -- Turn around to face the opposite direction
     local distance_from_home = distance_in_center_from_home() -- Calculate the distance from home 
+    print("Distance from home: " .. distance_from_home)
     if distance_from_home > 0 then
         move_x_blocks(distance_from_home) -- Move back to the center
     end
