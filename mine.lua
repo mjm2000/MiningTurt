@@ -357,6 +357,14 @@ local keepItems = {
   ["minecraft:coal"] = true,
   ["minecraft:charcoal"] = true
 }
+local stone_items = {
+  ["minecraft:cobblestone"] = true,
+  ["minecraft:stone"] = true,
+  ["minecraft:andesite"] = true,
+  ["minecraft:diorite"] = true,
+  ["minecraft:granite"] = true,
+  ["forbidden_arcanus:dark_stone"] = true
+}
 
 local function dumpItems()
   for i = 1, 16 do
@@ -367,16 +375,33 @@ local function dumpItems()
         end
     end
 end
-
+local function remove_liquid(inspected_function,place_function)
+    local truth,inspected_value = inspected_function()
+    if inspected_value.name == "minecraft:water" or inspected_value.name == "minecraft:lava" then
+        -- find any stone in the inventory
+        for slot = 1, 16 do
+            local item = turtle.getItemDetail(slot)
+            if item and stone_items[item.name] then
+                turtle.select(slot)
+                place_function() 
+                break
+            end
+        end
+        
+    end
+end
 
 local function mine_foward()
     if turtle.detectUp() then 
+        remove_liquid(turtle.inspectUp, turtle.placeUp)
         turtle.digUp()
     end
     if turtle.detectDown() then
+        remove_liquid(turtle.inspectDown, turtle.placeDown)
         turtle.digDown()
     end
     if turtle.detect() then
+        remove_liquid(turtle.inspect, turtle.place)
         turtle.dig()
     end
     move_foward()
@@ -429,6 +454,17 @@ local keepItems = {
   ["minecraft:coal"] = true,
   ["minecraft:charcoal"] = true
 }
+--check if inv is full
+local function isInventoryFull()
+  for i = 1, 16 do
+    if turtle.getItemCount(i) == 0 then
+      return false
+    end
+  end
+  return true
+end
+
+
 local function dumpItemsUp()
   local is_block,item = turtle.inspectUp() 
   if is_block and item.name == "minecraft:chest" then
@@ -451,7 +487,12 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
         refuel() -- Refuel the turtle
         if not enough_fuel((mine_path_len+3)*2 + mine_separation) then
             print("Not enough fuel to continue mining.")
-            return
+            break 
+        end
+        if isInventoryFull() then
+            print("Inventory full, returning to dump items.")
+            dumpItemsUp() -- Dump items in chest above
+            break
         end
         mine_x_blocks(mine_separation) -- Move forward the separation distance
         turnLeft() -- Turn left 
