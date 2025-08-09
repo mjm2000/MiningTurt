@@ -117,6 +117,7 @@ local function place_torch()
         local item = turtle.getItemDetail(slot)
         if item and (item.name == "minecraft:torch" or item.name == "silentgear:stonetorch") then
             if turtle.placeDown() then
+                print("Torch placed successfully.")
                 return true
             else
                 print("Failed to place torch.")
@@ -124,6 +125,7 @@ local function place_torch()
             end
         end
     end
+    print("No torch found in inventory.")
 end
 local function plug_liquid()
     local success, data = turtle.inspect()
@@ -482,6 +484,10 @@ local function dumpItemsUp()
 end
 
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
+    if not enough_fuel(1) then
+        print("Not enough fuel to start mining.")
+        return
+    end
     set_home() -- Set the home position    
     move_foward() -- Move forward to start mining
     for i = 1, amount do
@@ -492,7 +498,6 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
         end
         if isInventoryFull() then
             print("Inventory full, returning to dump items.")
-            dumpItemsUp() -- Dump items in chest above
             break
         end
         mine_x_blocks(mine_separation) -- Move forward the separation distance
