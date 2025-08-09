@@ -512,6 +512,7 @@ local amount = 0
 local mine_separation = 0
 local mine_path_len = 0
 if #arg ~= 3 then
+    print(#arg)
     amount = ask_for_integer("how many branches should we mine?: ") -- Get the number of blocks to mine                        
     mine_separation = ask_for_integer("how many blocks should it separate the branches") -- Get the separation between mines
     mine_path_len = ask_for_integer("how long should each branch be") -- Get the length of the mine
