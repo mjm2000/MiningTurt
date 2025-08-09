@@ -513,13 +513,14 @@ local function dumpItemsUp()
 end
 
 local function mineF(face_direction,amount, mine_separation, mine_path_len)
-    place_torch()
     if not enough_fuel(1) then
         print("Not enough fuel to start mining.")
         return
     end
     set_home() -- Set the home position    
     move_foward() -- Move forward to start mining
+
+    place_torch()
     for i = 1, amount do
         refuel() -- Refuel the turtle
         if not enough_fuel((mine_path_len+3)*2 + mine_separation) then
