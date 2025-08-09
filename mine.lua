@@ -115,7 +115,8 @@ local face_direction = "west"
 local function place_torch()
     for slot = 1, 16 do
         local item = turtle.getItemDetail(slot)
-        if item and (item.name == "minecraft:torch" or item.name == "silentgear:stonetorch") then
+        if item and (item.name == "minecraft:torch" or item.name == "silentgear:stone_torch") then
+            turtle.select(slot)
             if turtle.placeDown() then
                 print("Torch placed successfully.")
                 return true
@@ -352,7 +353,7 @@ local mine
 
 local keepItems = {
   ["minecraft:torch"] = true,
-  ["silentgear:stonetorch"] = true,
+  ["silentgear:stone_torch"] = true,
   ["minecraft:coal"] = true,
   ["minecraft:charcoal"] = true
 }
@@ -526,6 +527,11 @@ local function mineF(face_direction,amount, mine_separation, mine_path_len)
         end
         if isInventoryFull() then
             print("Inventory full, returning to dump items.")
+            local blocks_to_return = distance_in_center_from_home()
+            return_home_from_center() -- Return to the home position
+            dumpItemsUp() -- Dump items in the chest above
+            turn_around() -- Turn around to face the opposite direction
+            move_x_blocks(blocks_to_return) -- Move back to the center
             break
         end
         mine_x_blocks(mine_separation) -- Move forward the separation distance
